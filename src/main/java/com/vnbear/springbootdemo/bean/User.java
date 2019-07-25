@@ -7,10 +7,19 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:vnbear.properties")
 @ConfigurationProperties(prefix = "com.vnbear")
-public class UserBean {
+public class User {
     private String name;
+    private String password;
     private String want;
     private int age;
+
+    public User() {
+    }
+
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
 
     public String getName() {
         return name;
@@ -18,6 +27,14 @@ public class UserBean {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getWant() {

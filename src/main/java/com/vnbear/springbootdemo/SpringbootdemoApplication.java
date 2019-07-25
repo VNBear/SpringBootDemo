@@ -1,6 +1,6 @@
 package com.vnbear.springbootdemo;
 
-import com.vnbear.springbootdemo.bean.UserBean;
+import com.vnbear.springbootdemo.bean.User;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @SpringBootApplication
-@EnableConfigurationProperties(UserBean.class)
-public class SpringbootdemoApplication  extends SpringBootServletInitializer {
+@EnableConfigurationProperties(User.class)
+public class SpringbootdemoApplication extends SpringBootServletInitializer {
 
     @RequestMapping("/hello")
-    public String index(){
+    public String index() {
         return "hello Spring Boot";
     }
 
@@ -28,6 +28,5 @@ public class SpringbootdemoApplication  extends SpringBootServletInitializer {
     public static void main(String[] args) {
         SpringApplication.run(SpringbootdemoApplication.class, args);
     }
-
 
 }

@@ -1,9 +1,16 @@
 package com.vnbear.springbootdemo.bean;
 
 public class LearnResouce {
+    private String id;
+
     private String author;
+
     private String title;
+
     private String url;
+
+    public LearnResouce() {
+    }
 
     public LearnResouce(String author, String title, String url) {
         this.author = author;
@@ -11,12 +18,20 @@ public class LearnResouce {
         this.url = url;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
+    }
+
     public String getAuthor() {
         return author;
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        this.author = author == null ? null : author.trim();
     }
 
     public String getTitle() {
@@ -24,7 +39,7 @@ public class LearnResouce {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title = title == null ? null : title.trim();
     }
 
     public String getUrl() {
@@ -32,6 +47,6 @@ public class LearnResouce {
     }
 
     public void setUrl(String url) {
-        this.url = url;
+        this.url = url == null ? null : url.trim();
     }
 }

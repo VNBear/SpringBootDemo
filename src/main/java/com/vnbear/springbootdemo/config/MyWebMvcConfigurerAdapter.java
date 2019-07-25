@@ -1,0 +1,58 @@
+package com.vnbear.springbootdemo.config;
+
+import com.vnbear.springbootdemo.interceptor.MyInterceptor;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class MyWebMvcConfigurerAdapter implements WebMvcConfigurer {
+
+    /**
+     * 配置静态访问资源
+     *
+     * @param registry
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/my/**").addResourceLocations("classpath:/my/");
+    }
+
+    /**
+     * 以前要访问一个页面需要先创建个Controller控制类，在写方法跳转到页面
+     * 在这里配置后就不需要那么麻烦了，直接访问http://localhost:8080/toLogin就跳转到login.html页面了
+     *
+     * @param registry
+     */
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+
+        // 对 "/admin" 的 请求 redirect 到登录页面
+        registry.addRedirectViewController("/admin", "/login");
+
+        registry.addViewController("/toLogin").setViewName("/index");
+
+        // 对 "/hello/**" 的请求 返回 404 的 http 状态
+        registry.addStatusController("/hello/**", HttpStatus.NOT_FOUND);
+
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // addPathPatterns 用于添加拦截规则
+        // excludePathPatterns 用户排除拦截
+/*        registry.addInterceptor(MyInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/toLogin", "/login","/my/**","/static/**","/templates/**");*/
+    }
+
+    @Bean
+    public MyInterceptor MyInterceptor() {
+        return new MyInterceptor();
+    }
+}
