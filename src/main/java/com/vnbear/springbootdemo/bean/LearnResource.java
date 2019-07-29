@@ -1,6 +1,9 @@
 package com.vnbear.springbootdemo.bean;
 
-public class LearnResouce {
+import javax.persistence.*;
+
+@Table(name = "learn_resource")
+public class LearnResource {
     private String id;
 
     private String author;
@@ -9,43 +12,67 @@ public class LearnResouce {
 
     private String url;
 
-    public LearnResouce() {
+    public LearnResource() {
     }
 
-    public LearnResouce(String author, String title, String url) {
+    public LearnResource(String author, String title, String url) {
         this.author = author;
         this.title = title;
         this.url = url;
     }
 
+    /**
+     * @return id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * @param id
+     */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
     }
 
+    /**
+     * @return author
+     */
     public String getAuthor() {
         return author;
     }
 
+    /**
+     * @param author
+     */
     public void setAuthor(String author) {
         this.author = author == null ? null : author.trim();
     }
 
+    /**
+     * @return title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * @param title
+     */
     public void setTitle(String title) {
         this.title = title == null ? null : title.trim();
     }
 
+    /**
+     * @return url
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * @param url
+     */
     public void setUrl(String url) {
         this.url = url == null ? null : url.trim();
     }

@@ -2,9 +2,11 @@ package com.vnbear.springbootdemo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
-import com.vnbear.springbootdemo.bean.LearnResouce;
+import com.vnbear.springbootdemo.bean.LearnResource;
 import com.vnbear.springbootdemo.bean.User;
+import com.vnbear.springbootdemo.model.LeanQueryLeanListReq;
 import com.vnbear.springbootdemo.service.LearnService;
+import com.vnbear.springbootdemo.utils.Page;
 import com.vnbear.springbootdemo.utils.ServletUtil;
 import com.vnbear.springbootdemo.utils.StringUtil;
 
@@ -58,11 +60,11 @@ public class LearnResourceController {
             ServletUtil.createSuccessResponse(200, result, response);
             return;
         }
-        LearnResouce learnResouce = new LearnResouce();
-        learnResouce.setAuthor(author);
-        learnResouce.setTitle(title);
-        learnResouce.setUrl(url);
-        int index = learnService.add(learnResouce);
+        LearnResource learnResource = new LearnResource();
+        learnResource.setAuthor(author);
+        learnResource.setTitle(title);
+        learnResource.setUrl(url);
+        int index = learnService.add(learnResource);
         if (index > 0) {
             result.put("message", "教程信息添加成功!");
             result.put("flag", true);
@@ -78,7 +80,7 @@ public class LearnResourceController {
     public void selectLearn(HttpServletRequest request, HttpServletResponse response) {
         JSONObject result = new JSONObject();
         String id = request.getParameter("id");
-        LearnResouce learnResouce = learnService.queryLearnResouceById(Long.valueOf(id));
+        LearnResource learnResource = learnService.queryLearnResouceById(Long.valueOf(id));
         String author = request.getParameter("author");
         String title = request.getParameter("title");
         String url = request.getParameter("url");
@@ -100,9 +102,9 @@ public class LearnResourceController {
             ServletUtil.createSuccessResponse(200, result, response);
             return;
         }
-        learnResouce.setAuthor(author);
-        learnResouce.setTitle(title);
-        learnResouce.setUrl(url);
+        learnResource.setAuthor(author);
+        learnResource.setTitle(title);
+        learnResource.setUrl(url);
         result.put("message", "教程信息查询成功!");
         result.put("flag", true);
 
@@ -113,7 +115,7 @@ public class LearnResourceController {
     public void updateLearn(HttpServletRequest request, HttpServletResponse response) {
         JSONObject result = new JSONObject();
         String id = request.getParameter("id");
-        LearnResouce learnResouce = learnService.queryLearnResouceById(Long.valueOf(id));
+        LearnResource learnResource = learnService.queryLearnResouceById(Long.valueOf(id));
         String author = request.getParameter("author");
         String title = request.getParameter("title");
         String url = request.getParameter("url");
@@ -135,10 +137,10 @@ public class LearnResourceController {
             ServletUtil.createSuccessResponse(200, result, response);
             return;
         }
-        learnResouce.setAuthor(author);
-        learnResouce.setTitle(title);
-        learnResouce.setUrl(url);
-        int index = learnService.update(learnResouce);
+        learnResource.setAuthor(author);
+        learnResource.setTitle(title);
+        learnResource.setUrl(url);
+        int index = learnService.update(learnResource);
         System.out.println("修改结果=" + index);
         if (index > 0) {
             result.put("message", "教程信息修改成功!");
@@ -176,12 +178,16 @@ public class LearnResourceController {
         String author = request.getParameter("author");
         String title = request.getParameter("title");
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("page", page);
-        params.put("rows", rows);
         params.put("author", author);
         params.put("title", title);
-        List<LearnResouce> learnList = learnService.queryLearnResouceList(params);
-        PageInfo<LearnResouce> pageInfo = new PageInfo<LearnResouce>(learnList);
+
+        Page condition = new Page<LeanQueryLeanListReq>();
+        condition.setPage(Integer.parseInt(page));
+        condition.setRows(Integer.parseInt(rows));
+        condition.setCondition(params);
+
+        List<LearnResource> learnList = learnService.queryLearnResouceList(condition);
+        PageInfo<LearnResource> pageInfo = new PageInfo<LearnResource>(learnList);
         JSONObject jo = new JSONObject();
         jo.put("rows", learnList);
         jo.put("total", pageInfo.getPages());//总页数
@@ -216,26 +222,26 @@ public class LearnResourceController {
         logger.warn("日志输出 warn");
         logger.error("日志输出 error");
 
-        List<LearnResouce> learnList = new ArrayList<LearnResouce>();
-        LearnResouce bean = new LearnResouce("官方参考文档", "Spring Boot Reference Guide", "http://docs.spring.io/spring-boot/docs/1.5.1.RELEASE/reference/htmlsingle/#getting-started-first-application");
+        List<LearnResource> learnList = new ArrayList<LearnResource>();
+        LearnResource bean = new LearnResource("官方参考文档", "Spring Boot Reference Guide", "http://docs.spring.io/spring-boot/docs/1.5.1.RELEASE/reference/htmlsingle/#getting-started-first-application");
         learnList.add(bean);
-        bean = new LearnResouce("官方SpriongBoot例子", "官方SpriongBoot例子", "https://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples");
+        bean = new LearnResource("官方SpriongBoot例子", "官方SpriongBoot例子", "https://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples");
         learnList.add(bean);
-        bean = new LearnResouce("龙国学院", "Spring Boot 教程系列学习", "http://www.roncoo.com/article/detail/125488");
+        bean = new LearnResource("龙国学院", "Spring Boot 教程系列学习", "http://www.roncoo.com/article/detail/125488");
         learnList.add(bean);
-        bean = new LearnResouce("嘟嘟MD独立博客", "Spring Boot干货系列 ", "http://tengj.top/");
+        bean = new LearnResource("嘟嘟MD独立博客", "Spring Boot干货系列 ", "http://tengj.top/");
         learnList.add(bean);
-        bean = new LearnResouce("后端编程嘟", "Spring Boot教程和视频 ", "http://www.toutiao.com/m1559096720023553/");
+        bean = new LearnResource("后端编程嘟", "Spring Boot教程和视频 ", "http://www.toutiao.com/m1559096720023553/");
         learnList.add(bean);
-        bean = new LearnResouce("程序猿DD", "Spring Boot系列", "http://www.roncoo.com/article/detail/125488");
+        bean = new LearnResource("程序猿DD", "Spring Boot系列", "http://www.roncoo.com/article/detail/125488");
         learnList.add(bean);
-        bean = new LearnResouce("纯洁的微笑", "Sping Boot系列文章", "http://www.ityouknow.com/spring-boot");
+        bean = new LearnResource("纯洁的微笑", "Sping Boot系列文章", "http://www.ityouknow.com/spring-boot");
         learnList.add(bean);
-        bean = new LearnResouce("CSDN——小当博客专栏", "Sping Boot学习", "http://blog.csdn.net/column/details/spring-boot.html");
+        bean = new LearnResource("CSDN——小当博客专栏", "Sping Boot学习", "http://blog.csdn.net/column/details/spring-boot.html");
         learnList.add(bean);
-        bean = new LearnResouce("梁桂钊的博客", "Spring Boot 揭秘与实战", "http://blog.csdn.net/column/details/spring-boot.html");
+        bean = new LearnResource("梁桂钊的博客", "Spring Boot 揭秘与实战", "http://blog.csdn.net/column/details/spring-boot.html");
         learnList.add(bean);
-        bean = new LearnResouce("林祥纤博客系列", "从零开始学Spring Boot ", "http://412887952-qq-com.iteye.com/category/356333");
+        bean = new LearnResource("林祥纤博客系列", "从零开始学Spring Boot ", "http://412887952-qq-com.iteye.com/category/356333");
         learnList.add(bean);
         ModelAndView modelAndView = new ModelAndView("/index");
         modelAndView.addObject("learnList", learnList);

@@ -1,46 +1,45 @@
 package com.vnbear.springbootdemo.service;
 
-import com.vnbear.springbootdemo.bean.LearnResouce;
-import com.vnbear.springbootdemo.dao.LearnResourceDao;
+import com.github.pagehelper.PageHelper;
+import com.vnbear.springbootdemo.bean.LearnResource;
+import com.vnbear.springbootdemo.dao.LearnResourceMapper;
+import com.vnbear.springbootdemo.model.LeanQueryLeanListReq;
+import com.vnbear.springbootdemo.utils.Page;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
-public class LearnServiceImpl implements LearnService {
+public class LearnServiceImpl extends BaseServiceImpl<LearnResource> implements LearnService {
 
     @Autowired
-    LearnResourceDao learnResourceDao;
+    private LearnResourceMapper learnResourceMapper;
 
     @Override
-    public int add(LearnResouce learnResouce) {
-        return learnResourceDao.insert(learnResouce);
+    public int add(LearnResource learnResource) {
+        return save(learnResource);
     }
 
     @Override
-    public int update(LearnResouce learnResouce) {
-        return learnResourceDao.updateByPrimaryKeySelective(learnResouce);
+    public int update(LearnResource learnResource) {
+        return updateNotNull(learnResource);
     }
 
     @Override
     public int deleteByIds(String id) {
-        return learnResourceDao.deleteByPrimaryKey(id);
+        return delete(id);
     }
 
     @Override
-    public LearnResouce queryLearnResouceById(Long id) {
-        return learnResourceDao.selectByPrimaryKey(String.valueOf(id));
+    public LearnResource queryLearnResouceById(Long id) {
+        return selectByKey(String.valueOf(id));
     }
 
     @Override
-    public List<LearnResouce> queryLearnResouceList(Map<String, Object> params) {
-       /* PageHelper.startPage(Integer.parseInt(params.get("page").toString()),
-                Integer.parseInt(params.get("rows").toString()));*/
-        //return learnResourceDao.selectByPrimaryKey(params);
-        return new ArrayList<>();
+    public List<LearnResource> queryLearnResouceList(Page<LeanQueryLeanListReq> page) {
+        PageHelper.startPage(page.getPage(), page.getRows());
+        return learnResourceMapper.queryLearnResouceList(page.getCondition());
     }
 }

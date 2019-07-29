@@ -1,19 +1,20 @@
 package com.vnbear.springbootdemo.service;
 
-import com.vnbear.springbootdemo.bean.LearnResouce;
+import com.vnbear.springbootdemo.bean.LearnResource;
+import com.vnbear.springbootdemo.model.LeanQueryLeanListReq;
+import com.vnbear.springbootdemo.utils.Page;
 
 import java.util.List;
-import java.util.Map;
 
-public interface LearnService {
-    int add(LearnResouce learnResouce);
+public interface LearnService extends IBaseService<LearnResource>{
+    int add(LearnResource learnResource);
 
-    int update(LearnResouce learnResouce);
+    int update(LearnResource learnResource);
 
     int deleteByIds(String id);
 
-    LearnResouce queryLearnResouceById(Long learnResouce);
+    LearnResource queryLearnResouceById(Long learnResouce);
 
-    List<LearnResouce> queryLearnResouceList(Map<String, Object> params);
+    List<LearnResource> queryLearnResouceList(Page<LeanQueryLeanListReq> page);
 }
 
